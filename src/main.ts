@@ -9,8 +9,12 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true
+      whitelist: true, //If set to true, validator will strip validated (returned) object of any properties that do not use any validation decorators.
+      forbidNonWhitelisted: true, //If set to true, instead of stripping non-whitelisted properties validator will throw an exception.
+      transform: true, //Me transforma la informacion que flushe por los DTO segun lo que se espera 
+      transformOptions: {
+        enableImplicitConversion: true
+      }
     })
   )
 

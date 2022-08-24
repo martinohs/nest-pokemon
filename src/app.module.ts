@@ -4,6 +4,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { PokemonModule } from './pokemon/pokemon.module';
 import { CommonModule } from './common/common.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { CommonModule } from './common/common.module';
     //>> Creo la referencia a la base de datos
     MongooseModule.forRoot('mongodb://localhost:27017/nest-pokemon'), //En forRoot indicamos el url de nuestra bd
 
-    PokemonModule, CommonModule
+    PokemonModule, CommonModule, SeedModule
   ],
 })
 export class AppModule {}

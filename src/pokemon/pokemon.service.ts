@@ -1,6 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { Pokemon } from './entities/pokemon.entity';
@@ -28,9 +29,11 @@ export class PokemonService {
 
   }
 
-  async findAll() {
-   
-    return this.pokemonModel.find();
+  async findAll(paginationDto: PaginationDto) {
+    const { offset, limit } = paginationDto
+    return this.pokemonModel.find()
+      .skip(offset)
+      .limit(limit);
   }
 
   async findOne(termino: string) {
@@ -85,4 +88,14 @@ private handleExceptions ( error : any) {
     throw new InternalServerErrorException(`Can't create Pokemon, contact the db administrator`);
 
   }
+
+public async populateDBWithPokemons(pokemons: any[]){
+  try {
+    await this.pokemonModel.insertMany(pokemons)
+    return 'ok'
+  } catch (error) {
+    console.log(error);
+  }  
+ 
+} 
 }
